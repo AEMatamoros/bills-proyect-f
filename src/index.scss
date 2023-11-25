@@ -1,0 +1,17 @@
+$info-color: teal;
+$danger-color: tomato;
+$theme-colors: (
+  "info": $info-color,
+  "danger": $danger-color,
+);
+
+@import "bootstrap/scss/bootstrap";
+
+.full-view {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
