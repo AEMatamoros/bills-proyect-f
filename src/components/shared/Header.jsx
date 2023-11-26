@@ -15,10 +15,10 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto ">
             <CustomNavlink to="" className="p-2">
-              Create Bill
+              Crear Factura
             </CustomNavlink>
             <CustomNavlink to="/bill-list" className="p-2">
-              Bills List
+              Listado de Facturas
             </CustomNavlink>
           </Nav>
         </Navbar.Collapse>
