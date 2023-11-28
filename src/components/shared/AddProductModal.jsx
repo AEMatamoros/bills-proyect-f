@@ -63,7 +63,7 @@ function Example({ show, handleShow, handleClose }) {
                       {selectedProduct.name}
                     </Card.Title>
                     <Card.Text className="text-center">
-                      {selectedProduct.price}
+                      {selectedProduct.price} LPS
                     </Card.Text>
                   </div>
                 </div>

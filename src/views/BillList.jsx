@@ -16,6 +16,7 @@ export default function BillList() {
 
   const bills = useSelector((state) => state.products.bills);
   const count = useSelector((state) => state.products.billsCount);
+  const loading = useSelector((state) => state.loading);
 
   const [selectedBill, setSelectedBill] = useState(null);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
@@ -26,66 +27,77 @@ export default function BillList() {
 
   return (
     <>
-      <div className="row">
-        <div className="col-12">
-          <h2 className="text-info">Crear Factura</h2>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Fecha</th>
-                <th>Cliente</th>
-                <th>RTN</th>
-                <th>Total</th>
-                <th>Descargar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bills.map((bill, index) => (
-                <tr key={bill.id}>
-                  <td>{index + 1 + page * 10 - 10}</td>
-                  <td>{bill.created_at.split("T")[0]}</td>
-                  <td>{bill.client_name}</td>
-                  <td>{bill.rtn}</td>
-                  <td>{bill.total ? bill.total.toFixed(2) : 0}</td>
-                  <td className="text-center text-danger" title="Descargar">
-                    <FontAwesomeIcon
-                      icon={faDownload}
-                      className="text-success"
-                      onClick={() => {
-                        setSelectedBill(bill);
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <div className="d-flex  justify-content-end gap-2">
-            <CustomButton
-              onClick={() => {
-                if (page - 1 > 0) setPage(page - 1);
-              }}
-            >
-              Back
-            </CustomButton>
+      {!loading ? (
+        <>
+          <div className="row">
+            <div className="col-12">
+              <h2 className="text-info">Crear Factura</h2>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>RTN</th>
+                    <th>Total</th>
+                    <th>Descargar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bills.map((bill, index) => (
+                    <tr key={bill.id}>
+                      <td>{index + 1 + page * 10 - 10}</td>
+                      <td>{bill.created_at.split("T")[0]}</td>
+                      <td>{bill.client_name}</td>
+                      <td>{bill.rtn}</td>
+                      <td>{bill.total ? bill.total.toFixed(2) : 0}</td>
+                      <td
+                        className="text-center text-danger"
+                        title="Descargar"
+                        onClick={() => {
+                          setSelectedBill(bill);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faDownload}
+                          className="text-success"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <div className="d-flex  justify-content-end gap-2">
+                <CustomButton
+                  onClick={() => {
+                    if (page - 1 > 0) setPage(page - 1);
+                  }}
+                >
+                  Back
+                </CustomButton>
 
-            <CustomButton
-              onClick={() => {
-                if (page < numberOfPages) {
-                  setPage(page + 1);
-                }
-              }}
-            >
-              Next
-            </CustomButton>
+                <CustomButton
+                  onClick={() => {
+                    if (page < numberOfPages) {
+                      setPage(page + 1);
+                    }
+                  }}
+                >
+                  Next
+                </CustomButton>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div ref={targetRef}>
-        {selectedBill && <BillStructure bill={selectedBill}></BillStructure>}
-      </div>
+          <div ref={targetRef}>
+            {selectedBill && (
+              <BillStructure bill={selectedBill}></BillStructure>
+            )}
+          </div>
+        </>
+      ) : (
+        <h3>Cargando</h3>
+      )}
     </>
   );
 }
@@ -135,7 +147,7 @@ function BillStructure({ bill }) {
                             <td>{sell.product.name}</td>
                             <td>{sell.product.description}</td>
                             <td>{sell.quantity}</td>
-                            <td>{sell.product.price}</td>
+                            <td>{sell.product.price} LPS</td>
                             <td>{sell.product.discount / 100}</td>
                             <td>
                               {sell.product.price * sell.quantity -
